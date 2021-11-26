@@ -7,7 +7,6 @@ import io.ktor.jackson.*
 import io.ktor.util.*
 
 fun Application.configureSerialization() {
-    val app = this
     install(ContentNegotiation) {
         jackson {
             enable(SerializationFeature.INDENT_OUTPUT)
