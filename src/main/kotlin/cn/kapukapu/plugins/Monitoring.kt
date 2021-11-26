@@ -15,12 +15,21 @@ fun Application.configureMonitoring() {
             HistoryInMemoryCache.put(httpInfo)
             httpInfo
         }
-        filter { !it.request.path().startsWith("/history") }
+        val skipPathList = arrayOf("/favicon.ico", "/history")
+        filter {
+            val requestPath = it.request.path()
+            skipPathList.forEach { path ->
+                val startsWith = requestPath.startsWith(path)
+                if (startsWith) {
+                    return@filter false
+                }
+            }
+            true
+        }
     }
 }
 
 private fun getHttpDetail(it: ApplicationCall) = StringBuilder().apply {
-    appendLine("Received request:")
     val requestURI = it.request.path()
     appendLine(it.request.origin.run { "${method.value} $scheme://$host:$port$requestURI $version" })
 
