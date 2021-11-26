@@ -3,6 +3,7 @@ package cn.kapukapu.plugins
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.request.*
+import io.ktor.utils.io.*
 import kotlinx.coroutines.runBlocking
 import org.slf4j.event.Level
 
@@ -44,8 +45,8 @@ private fun getHttpDetail(it: ApplicationCall) = StringBuilder().apply {
 
     runBlocking {
         try {
-            val value = String(it.receive<ByteArray>())
-            if(value.isNotEmpty()){
+            val value = it.request.receiveChannel().readUTF8Line()
+            if(value?.isNotEmpty() == true){
                 appendLine()
                 appendLine(value)
             }
