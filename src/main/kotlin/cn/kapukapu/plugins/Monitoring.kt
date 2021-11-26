@@ -37,10 +37,18 @@ private fun getHttpDetail(it: ApplicationCall) = StringBuilder().apply {
         appendLine("$header: ${values.firstOrNull()}")
     }
 
+    it.request.queryParameters.forEach { header, values ->
+        appendLine()
+        append("$header: ${values.firstOrNull()}")
+    }
+
     runBlocking {
         try {
-            appendLine()
-            appendLine(String(it.receive<ByteArray>()))
+            val value = String(it.receive<ByteArray>())
+            if(value.isNotEmpty()){
+                appendLine()
+                appendLine(value)
+            }
         } catch (_: RequestAlreadyConsumedException) {
         }
     }
