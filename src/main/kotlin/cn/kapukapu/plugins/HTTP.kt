@@ -1,9 +1,7 @@
 package cn.kapukapu.plugins
 
-import io.ktor.features.*
 import io.ktor.application.*
-import io.ktor.response.*
-import io.ktor.request.*
+import io.ktor.features.*
 
 fun Application.configureHTTP() {
     install(DefaultHeaders) {
@@ -11,5 +9,4 @@ fun Application.configureHTTP() {
     }
     install(ForwardedHeaderSupport) // WARNING: for security, do not include this if not behind a reverse proxy
     install(XForwardedHeaderSupport) // WARNING: for security, do not include this if not behind a reverse proxy
-
 }

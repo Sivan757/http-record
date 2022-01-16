@@ -6,6 +6,7 @@ import io.ktor.request.*
 import io.ktor.utils.io.*
 import kotlinx.coroutines.runBlocking
 import org.slf4j.event.Level
+import java.time.LocalDateTime
 
 fun Application.configureMonitoring() {
     install(CallLogging) {
@@ -33,6 +34,8 @@ fun Application.configureMonitoring() {
 private fun getHttpDetail(it: ApplicationCall) = StringBuilder().apply {
     val requestURI = it.request.path()
     appendLine(it.request.origin.run { "${method.value} $scheme://$host:$port$requestURI $version" })
+
+    appendLine("Date: ${LocalDateTime.now()}")
 
     it.request.headers.forEach { header, values ->
         appendLine("$header: ${values.firstOrNull()}")

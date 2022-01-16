@@ -1,17 +1,10 @@
 package cn.kapukapu
 
-import io.ktor.features.*
-import io.ktor.routing.*
+import cn.kapukapu.plugins.configureRouting
 import io.ktor.http.*
-import org.slf4j.event.*
-import io.ktor.jackson.*
-import com.fasterxml.jackson.databind.*
-import io.ktor.application.*
-import io.ktor.response.*
-import io.ktor.request.*
-import kotlin.test.*
 import io.ktor.server.testing.*
-import cn.kapukapu.plugins.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class ApplicationTest {
     @Test
@@ -19,7 +12,15 @@ class ApplicationTest {
         withTestApplication({ configureRouting() }) {
             handleRequest(HttpMethod.Get, "/").apply {
                 assertEquals(HttpStatusCode.OK, response.status())
-                assertEquals("Hello World!", response.content)
+            }
+        }
+    }
+
+    @Test
+    fun `test history page`() {
+        withTestApplication({ configureRouting() }) {
+            handleRequest(HttpMethod.Get, "/history").apply {
+                assertEquals(HttpStatusCode.OK, response.status())
             }
         }
     }

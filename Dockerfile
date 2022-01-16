@@ -1,6 +1,6 @@
-FROM openjdk:11-jdk
+FROM alpine
 EXPOSE 8080:8080
 RUN mkdir /app
-COPY ./build/install/http-record/ /app/
-WORKDIR /app/bin
-CMD ["./http-record"]
+COPY ./http-record /app/
+WORKDIR /app
+ENTRYPOINT ["./http-record"]
