@@ -132,7 +132,7 @@ jobs:
           native-image --no-fallback --report-unsupported-elements-at-runtime \
           --install-exit-handlers --allow-incomplete-classpath --initialize-at-build-time=io.ktor,kotlinx,kotlin,org\
           -H:+ReportUnsupportedElementsAtRuntime -H:+ReportExceptionStackTraces \
-          -H:ReflectionConfigurationFiles=reflection.json -jar ./build/libs/http-record-1.1.0-all.jar
+          -H:ReflectionConfigurationFiles=reflection.json -jar ./build/libs/http-record-${{env.VERSION}}-all.jar
 
       - name: 'Publish Native Image'
         if: success()
@@ -198,7 +198,7 @@ jobs:
           ./graalvm-ce-java11-21.3.0/bin/native-image --no-fallback --report-unsupported-elements-at-runtime \
           --install-exit-handlers --allow-incomplete-classpath --initialize-at-build-time=io.ktor,kotlinx,kotlin,org\
           -H:+ReportUnsupportedElementsAtRuntime -H:+ReportExceptionStackTraces \
-          -H:ReflectionConfigurationFiles=reflection.json -jar ./build/libs/http-record-1.1.0-all.jar
+          -H:ReflectionConfigurationFiles=reflection.json -jar ./build/libs/http-record-${{env.VERSION}}-all.jar
 
 - name: 'Get Release URL'
         if: contains(github.ref, 'v')
