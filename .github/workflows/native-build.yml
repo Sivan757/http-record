@@ -20,6 +20,7 @@ jobs:
         uses: actions/setup-java@v2.5.0
         with:
           java-version: 11
+          distribution: 'temurin'
 
       - name: 'Build JAR'
         run: |
