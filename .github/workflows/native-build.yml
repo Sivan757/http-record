@@ -129,11 +129,10 @@ jobs:
 
       - name: 'Build Native Image'
         run: |
-          native-image --no-fallback --enable-all-security-services --report-unsupported-elements-at-runtime \
+          native-image --no-fallback --report-unsupported-elements-at-runtime \
           --install-exit-handlers --allow-incomplete-classpath --initialize-at-build-time=io.ktor,kotlinx,kotlin,org\
           -H:+ReportUnsupportedElementsAtRuntime -H:+ReportExceptionStackTraces \
-          -H:ReflectionConfigurationFiles=./reflection.json -cp ./build/libs/http-record-${{env.VERSION}}-all.jar \
-          -H:Class=cn.kapukapu.ApplicationKt -H:Name=http-record
+          -H:ReflectionConfigurationFiles=reflection.json -jar ./build/libs/http-record-1.1.0-all.jar
 
       - name: 'Publish Native Image'
         if: success()
@@ -196,14 +195,12 @@ jobs:
           JAVA_HOME: ./graalvm-ce-java11-21.3.0
         run: |
           call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
-          ./graalvm-ce-java11-21.3.0/bin/native-image --no-fallback --enable-all-security-services --report-unsupported-elements-at-runtime \
+          ./graalvm-ce-java11-21.3.0/bin/native-image --no-fallback --report-unsupported-elements-at-runtime \
           --install-exit-handlers --allow-incomplete-classpath --initialize-at-build-time=io.ktor,kotlinx,kotlin,org\
-          -H:IncludeResources=logback.xml -H:+ReportUnsupportedElementsAtRuntime -H:+ReportExceptionStackTraces \
-          -H:ReflectionConfigurationFiles=./reflection.json -cp ./build/libs/http-record-${{env.VERSION}}-all.jar \
-          -H:Class=cn.kapukapu.ApplicationKt -H:Name=http-record
+          -H:+ReportUnsupportedElementsAtRuntime -H:+ReportExceptionStackTraces \
+          -H:ReflectionConfigurationFiles=reflection.json -jar ./build/libs/http-record-1.1.0-all.jar
 
-
-      - name: 'Get Release URL'
+- name: 'Get Release URL'
         if: contains(github.ref, 'v')
         uses: actions/download-artifact@v2-preview
         with:
