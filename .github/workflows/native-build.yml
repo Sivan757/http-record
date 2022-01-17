@@ -200,7 +200,7 @@ jobs:
           -H:+ReportUnsupportedElementsAtRuntime -H:+ReportExceptionStackTraces \
           -H:ReflectionConfigurationFiles=reflection.json -jar ./build/libs/http-record-${{env.VERSION}}-all.jar
 
-- name: 'Get Release URL'
+      - name: 'Get Release URL'
         if: contains(github.ref, 'v')
         uses: actions/download-artifact@v2-preview
         with:
