@@ -1,7 +1,6 @@
 package cn.kapukapu.plugins
 
 import io.ktor.application.*
-import io.ktor.features.*
 import io.ktor.html.*
 import io.ktor.http.*
 import io.ktor.http.content.*
@@ -12,7 +11,6 @@ import kotlinx.html.*
 import kotlinx.html.ThScope.col
 
 fun Application.configureRouting() {
-    install(AutoHeadResponse)
 
     routing {
         historyPage()
@@ -24,7 +22,7 @@ fun Application.configureRouting() {
 
 private fun Routing.notAllowWebSpider() {
     static {
-        file("robots.txt")
+        resource("robots.txt","robots.txt")
     }
 }
 
