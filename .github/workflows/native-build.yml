@@ -130,7 +130,7 @@ jobs:
       - name: 'Build Native Image'
         run: |
           native-image --no-fallback --report-unsupported-elements-at-runtime \
-          --install-exit-handlers --allow-incomplete-classpath --initialize-at-build-time=io.ktor,kotlinx,kotlin,org\
+          --install-exit-handlers --allow-incomplete-classpath --initialize-at-build-time=io.ktor,kotlinx,kotlin,org \
           -H:+ReportUnsupportedElementsAtRuntime -H:+ReportExceptionStackTraces \
           -H:ReflectionConfigurationFiles=reflection.json -jar http-record-${{env.VERSION}}-all.jar
 
@@ -195,10 +195,7 @@ jobs:
           JAVA_HOME: ./graalvm-ce-java11-21.3.0
         run: |
           call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
-          ./graalvm-ce-java11-21.3.0/bin/native-image --no-fallback --report-unsupported-elements-at-runtime \
-          --install-exit-handlers --allow-incomplete-classpath --initialize-at-build-time=io.ktor,kotlinx,kotlin,org\
-          -H:+ReportUnsupportedElementsAtRuntime -H:+ReportExceptionStackTraces \
-          -H:ReflectionConfigurationFiles=reflection.json -jar http-record-${{env.VERSION}}-all.jar
+          ./graalvm-ce-java11-21.3.0/bin/native-image --no-fallback --report-unsupported-elements-at-runtime --install-exit-handlers --allow-incomplete-classpath --initialize-at-build-time=io.ktor,kotlinx,kotlin,org -H:+ReportUnsupportedElementsAtRuntime -H:+ReportExceptionStackTraces -H:ReflectionConfigurationFiles=reflection.json -jar http-record-${{env.VERSION}}-all.jar
 
       - name: 'Get Release URL'
         if: contains(github.ref, 'v')
