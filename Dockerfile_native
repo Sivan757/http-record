@@ -1,6 +1,12 @@
-FROM alpine
+FROM ghcr.io/graalvm/native-image:22.2.0 AS native_build
+COPY ./build/libs/*-all.jar /build/
+COPY ./reflection.json /build/
+RUN cd /build && native-image --static --no-fallback --report-unsupported-elements-at-runtime \
+     --install-exit-handlers --initialize-at-build-time=io.ktor,kotlinx,kotlin,ch.qos.logback \
+     -H:+ReportUnsupportedElementsAtRuntime -H:+ReportExceptionStackTraces \
+     -H:ReflectionConfigurationFiles=reflection.json -jar *-all.jar -H:Name=http-record
+
+FROM scratch AS app
+COPY --from=native_build /build/http-record /
 EXPOSE 8080:8080
-RUN mkdir /app
-COPY ./http-record /app/
-WORKDIR /app
-ENTRYPOINT ["./http-record"]
+ENTRYPOINT ["/http-record"]
