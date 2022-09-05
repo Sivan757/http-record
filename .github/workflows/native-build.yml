@@ -90,7 +90,12 @@ jobs:
         uses: docker/metadata-action@v4.0.1
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            
       - name: Build and push Docker image
         uses: docker/build-push-action@v3.1.1
         with:
@@ -110,7 +115,7 @@ jobs:
           - os: 'ubuntu-latest'
             label: 'linux'
           - os: 'macos-latest'
-            label: 'mac'
+            label: 'macos'
     runs-on: ${{matrix.os}}
 
     steps:
@@ -154,7 +159,7 @@ jobs:
 
       - name: 'Build Native Image'
         run: |
-          native-image --no-fallback --report-unsupported-elements-at-runtime \
+          native-image --static --no-fallback --report-unsupported-elements-at-runtime \
           --install-exit-handlers --allow-incomplete-classpath --initialize-at-build-time=io.ktor,kotlinx,kotlin,ch.qos.logback \
           -H:+ReportUnsupportedElementsAtRuntime -H:+ReportExceptionStackTraces \
           -H:ReflectionConfigurationFiles=reflection.json -jar http-record-${{env.VERSION}}-all.jar
@@ -220,7 +225,7 @@ jobs:
           JAVA_HOME: ./graalvm-ce-java11-21.3.0
         run: |
           call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
-          ./graalvm-ce-java11-21.3.0/bin/native-image --no-fallback --report-unsupported-elements-at-runtime --install-exit-handlers --allow-incomplete-classpath --initialize-at-build-time=io.ktor,kotlinx,kotlin,ch.qos.logback -H:+ReportUnsupportedElementsAtRuntime -H:+ReportExceptionStackTraces -H:ReflectionConfigurationFiles=reflection.json -jar http-record-${{env.VERSION}}-all.jar
+          ./graalvm-ce-java11-21.3.0/bin/native-image --static --no-fallback --report-unsupported-elements-at-runtime --install-exit-handlers --allow-incomplete-classpath --initialize-at-build-time=io.ktor,kotlinx,kotlin,ch.qos.logback -H:+ReportUnsupportedElementsAtRuntime -H:+ReportExceptionStackTraces -H:ReflectionConfigurationFiles=reflection.json -jar http-record-${{env.VERSION}}-all.jar
 
       - name: 'Get Release URL'
         if: contains(github.ref, 'v')
